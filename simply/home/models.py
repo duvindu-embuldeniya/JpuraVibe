@@ -20,6 +20,9 @@ class Room(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+    
+    class Meta:
+        ordering = ['-updated','-created']
 
 
 

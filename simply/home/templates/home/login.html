@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <div>
+
+
+        <form action="" method="POST">
+            {% crsf_token %}
+
+                <label for="">Username:- </label>
+                <input type="text" name="username" placeholder="username">
+
+                <br>
+
+                <label for="">Password:- </label>
+                <input type="password" name="password" placeholder="passowrd">
+
+            <button type="submit">Login</button>
+        </form>
+
+
+    </div>
+   
+{% endblock content %}
