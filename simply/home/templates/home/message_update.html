@@ -11,12 +11,11 @@
 
                 {{form.as_p}}
 
-            <button type="submit">Register</button>
+            <button type="submit">Update</button>
+            <a href="{% url 'room' room.pk %}">Back x1</a>
+            <a href="{{request.META.HTTP_REFERER}}">Back x2</a>
 
         </form>
-
-        <p>Already Signed Up?</p>
-        <a href="{% url 'login' %}">Login</a>
 
 
     </div>

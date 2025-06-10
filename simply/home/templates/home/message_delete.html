@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+   
+   <div>
+        <form action="" method="POST">
+            {% csrf_token %}
+
+                Are you sure you want to delete "{{msg.body}}" ?
+
+            <button type="Submit">Delete</button>
+            
+            <a href="{% url 'room' room.pk %}">Back x1</a>
+            <a href="{{request.META.HTTP_REFERER}}">Back x2</a>
+        </form>
+    </div>
+
+
+{% endblock content %}

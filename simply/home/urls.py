@@ -3,8 +3,16 @@ from . views import *
 
 urlpatterns = [
     path('', home, name = 'home'),
+
+    path('login/', login, name = 'login'),
+    path('logout/', logout, name = 'logout'),
+    path('register/', register, name = 'register'),
+
     path('room/<int:pk>/', room, name = 'room'),
     path('create-room/', createRoom, name = 'create-room'),
     path('update-room/<int:pk>/', updateRoom, name = 'update-room'),
     path('delete-room/<int:pk>/', deleteRoom, name = 'delete-room'),
+
+    path('update-message/<int:pk>/', updateMessage, name = 'update-message'),
+    path('delete-message/<int:pk>/', deleteMessage, name = 'delete-message'),
 ]

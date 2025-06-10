@@ -6,19 +6,22 @@
     <div>
 
 
-        <form action="" method="POST">
-            {% crsf_token %}
+        <form action="" method="POST" autocomplete="off">
+            {% csrf_token %}
 
                 <label for="">Username:- </label>
-                <input type="text" name="username" placeholder="username">
+                <input type="text" name="username" placeholder="username" required>
 
                 <br>
 
                 <label for="">Password:- </label>
-                <input type="password" name="password" placeholder="passowrd">
+                <input type="password" name="password" placeholder="passowrd" required>
 
             <button type="submit">Login</button>
         </form>
+
+        <p>Haven't Signed Up Yet?</p>
+        <a href="{% url 'register' %}">Register</a>
 
 
     </div>
