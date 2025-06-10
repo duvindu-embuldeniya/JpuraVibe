@@ -15,4 +15,8 @@ urlpatterns = [
 
     path('update-message/<int:pk>/', updateMessage, name = 'update-message'),
     path('delete-message/<int:pk>/', deleteMessage, name = 'delete-message'),
+
+    path('profile/<str:username>/', profile, name = 'profile'),
+    path('profile/<str:username>/update/', profileUpdate, name = 'profile-update'),
+    path('profile/<str:username>/delete/', profileDelete, name = 'profile-delete'),
 ]

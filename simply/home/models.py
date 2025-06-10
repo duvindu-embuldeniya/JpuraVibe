@@ -34,4 +34,7 @@ class Message(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.body[:50]}"
+        return self.body[:3]
+    
+    class Meta:
+        ordering = ['-created']

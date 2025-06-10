@@ -18,11 +18,27 @@ def home(request):
     rooms = Room.objects.filter(
         Q(topic__name__icontains = q)|
         Q(host__username__icontains = q)|
+        Q(name__icontains = q)|
+        Q(description__icontains = q)
+    )
+
+    rooms_count = rooms.count()
+
+    # topics = Topic.objects.all()
+    topics = Topic.objects.filter(
         Q(name__icontains = q)
     )
-    rooms_count = rooms.count()
-    topics = Topic.objects.all()
-    context = {'rooms':rooms, 'topics':topics, 'rooms_count':rooms_count}
+
+    # activities = Message.objects.all()
+    activities = Message.objects.filter(
+        Q(room__topic__name__icontains = q)|
+        Q(user__username__icontains = q)|
+        Q(room__name__icontains = q)|
+        Q(room__description__icontains = q)|
+        Q(body__icontains = q)
+    )
+
+    context = {'rooms':rooms, 'topics':topics, 'rooms_count':rooms_count, 'activities':activities}
     return render(request, 'home/index.html', context)
 
 
@@ -179,3 +195,28 @@ def deleteMessage(request, pk):
         return redirect('room', pk = room.pk)
     context = {'msg':msg, 'room':room}
     return render(request, 'home/message_delete.html', context)
+
+
+
+
+def profile(request, username):
+    current_user = User.objects.get(username = username)
+    rooms = current_user.room_set.all()
+    activities = current_user.message_set.all()
+    topics = Topic.objects.all()
+    context = {'current_user':current_user, 'rooms':rooms, 'activities':activities, 'topics':topics}
+    return render(request, 'home/profile.html', context)
+
+
+
+
+@login_required
+def profileUpdate(request, username):
+    pass
+
+
+
+
+@login_required
+def profileDelete(request, username):
+    pass

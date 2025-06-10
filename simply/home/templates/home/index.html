@@ -1,31 +1,28 @@
 {% extends 'base.html' %}
 
 
-
+ 
 {% block content %}
+    
+    <form action="" method="GET">
+
+        <input type="text" name="q">
+
+        <button type="submit">Search</button>
+    </form>
 
 
     <style>
         .home-container{
             display: grid;
-            grid-template-columns: 1fr 3fr;
+            grid-template-columns: 1fr 3fr 1fr;
         }
     </style>
 
 
     <div class="home-container">
 
-        <div>
-            <h3>Browse Topics</h3>
-            <hr>
-            <a href="{% url 'home' %}">All</a>
-            <br>
-            {% for topic in topics %}
-                <a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a>
-                <br>
-            {% endfor %}
-        </div>
-
+        {% include 'home/c1-topic.html' %}
 
 
         <div>
@@ -33,29 +30,12 @@
             <hr> 
             <a href="{% url 'create-room' %}">+Room</a>
 
-            </form>
+            {% include 'home/c2-feed.html' %}
 
-            <h3>Home Page</h3>
-
-            {% for room in rooms %}
-                {% if request.user == room.host %}
-                    <h4><a href="{% url 'update-room' room.pk %}">Update</a></h4>
-                    <h4><a href="{% url 'delete-room' room.pk %}">Delete</a></h4>
-                {% endif %}
-
-
-                <div>@{{room.host.username}}</div>
-                <a href="{% url 'room' room.id %}">{{room.name}}</a>
-                <br>
-                {{room.description}}
-                <br>
-                {{room.created}} | {{room.updated}}
-                <br>
-                <small>{{room.topic.name}}</small>
-
-                <hr>
-            {% endfor %}
         </div>
+
+
+        {% include 'home/c3-activity.html' %}
 
 
     </div>
