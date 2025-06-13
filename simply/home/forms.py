@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 class RoomForm(forms.ModelForm):
     class Meta:
         model = Room
-        fields = ['host', 'topic', 'name', 'description', 'participants']
+        fields = ['name', 'description']
 
 
 class UserRegistrationForm(UserCreationForm):

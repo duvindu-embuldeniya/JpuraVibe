@@ -118,14 +118,22 @@ def room(request,pk):
 
 @login_required
 def createRoom(request):
+    topics = Topic.objects.all()
     form = RoomForm()
     if request.method == 'POST':
         form = RoomForm(request.POST)
         if form.is_valid():
-            new_room = form.save()
+            new_room = form.save(commit=False)
+            new_room.host = request.user
+
+            topic_name = request.POST.get('topic')
+            topic,created = Topic.objects.get_or_create(name = topic_name)
+            new_room.topic = topic
+
+            new_room.save()
             messages.success(request, "Room Created Successfully!")
             return redirect('room', pk = new_room.pk)
-    context = {'form':form}
+    context = {'form':form, 'topics':topics}
     return render(request, 'home/room_create.html', context)
 
 
@@ -133,17 +141,32 @@ def createRoom(request):
 
 @login_required
 def updateRoom(request,pk):
+    topics = Topic.objects.all()
     room = Room.objects.get(id = pk)
+    current_topic = room.topic
+
     if request.user != room.host:
         return HttpResponse("<h1>Forbidden 403!</h1>")
+    
     form = RoomForm(instance=room)
     if request.method == 'POST':
         form = RoomForm(request.POST, instance=room)
         if form.is_valid():
-            form.save()
+            alt_room = form.save(commit=False)
+
+            topic_name = request.POST.get('topic')
+            topic,created = Topic.objects.get_or_create(name = topic_name)
+            alt_room.topic = topic
+
+            alt_room.save()
+
+            count = current_topic.room_set.all().count()
+            if count == 0:
+                current_topic.delete()
+
             messages.success(request, "Room Updated Successfully!")
             return redirect('room', pk = room.pk)
-    context = {'form':form}
+    context = {'form':form, 'room':room, 'topics':topics}
     return render(request, 'home/room_update.html', context)
 
 
@@ -152,10 +175,18 @@ def updateRoom(request,pk):
 @login_required
 def deleteRoom(request, pk):
     room = Room.objects.get(id = pk)
+    current_topic = room.topic
+
     if request.user != room.host:
         return HttpResponse("<h1>Forbidden 403!</h1>")
+    
     if request.method == 'POST':
         room.delete()
+
+        count = current_topic.room_set.all().count()
+        if count == 0:
+            current_topic.delete()
+
         messages.success(request, "Room Deleted Successfully!")
         return redirect('home')
     context = {'room':room}
