@@ -16,7 +16,9 @@
                         </p>
                     </a>
                     <div class="roomListRoom__actions">
-                        {% if request.user == activity.user %}
+
+
+                        <!-- {% if request.user == activity.user %}
                             <a href="{% url 'delete-message' activity.pk %}">
                             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                             <title>remove</title>
@@ -25,12 +27,13 @@
                             ></path>
                             </svg>
                             </a>
-                        {% endif %}
+                        {% endif %} -->
                     
+                        
                     </div>
                     </div>
                     <div class="activities__boxContent">
-                    <p>replied to room :- <a href="{% url 'room' activity.room.pk %}">{{activity.room.name}}</a></p>
+                    <p>replied to <a href="{% url 'room' activity.room.pk %}">{{activity.room.name}}</a></p>
                     <div class="activities__boxRoomContent">
                         {{activity.body}}
                     </div>

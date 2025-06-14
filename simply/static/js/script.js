@@ -67,3 +67,13 @@ if (photoInput)
 // Scroll to Bottom
 const conversationThread = document.querySelector(".room__box");
 if (conversationThread) conversationThread.scrollTop = conversationThread.scrollHeight;
+
+
+
+
+const topicc = document.getElementById('topic')
+topicc.addEventListener('input', func1)
+
+function func1(){
+  topicc.value = topicc.value.toLowerCase()
+}

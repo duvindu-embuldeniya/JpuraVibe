@@ -13,7 +13,7 @@ urlpatterns = [
     path('update-room/<int:pk>/', updateRoom, name = 'update-room'),
     path('delete-room/<int:pk>/', deleteRoom, name = 'delete-room'),
 
-    path('update-message/<int:pk>/', updateMessage, name = 'update-message'),
+    # path('update-message/<int:pk>/', updateMessage, name = 'update-message'),
     path('delete-message/<int:pk>/', deleteMessage, name = 'delete-message'),
 
     path('profile/<str:username>/', profile, name = 'profile'),

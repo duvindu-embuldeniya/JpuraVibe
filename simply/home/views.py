@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from . models import Topic,Room,Message
 from . forms import (
-    RoomForm, UserRegistrationForm, MessageForm
+    RoomForm, UserRegistrationForm, MessageForm, UserUpdateForm
     )
 from django.contrib import messages
 from django.db.models import Q
@@ -93,7 +93,7 @@ def register(request):
 
 
 
-
+@login_required
 def room(request,pk):
     room = Room.objects.get(id = pk)
     room_messages = room.message_set.all().order_by('-created')
@@ -102,12 +102,13 @@ def room(request,pk):
     if request.method == 'POST':
         new_msg = request.POST.get('body')
 
-        Message.objects.create(
-            user = request.user,
-            room = room,
-            body = new_msg
-        )
-        room.participants.add(request.user)
+        if new_msg != '':
+            Message.objects.create(
+                user = request.user,
+                room = room,
+                body = new_msg
+            )
+            room.participants.add(request.user)
         return redirect('room', pk = room.id)
 
     context = {'room':room, 'room_messages':room_messages, 'members':members}
@@ -195,21 +196,21 @@ def deleteRoom(request, pk):
 
 
 
-@login_required
-def updateMessage(request, pk):
-    msg = Message.objects.get(id = pk)
-    room = msg.room
-    if request.user != msg.user:
-        return HttpResponse("<h1>Forbidden 403!</h1>")
-    form = MessageForm(instance=msg)
-    if request.method == 'POST':
-        form = MessageForm(request.POST, instance=msg)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Message Updated Successfully!")
-            return redirect('room', pk = room.pk)
-    context = {'msg':msg, 'room':room, 'form':form}
-    return render(request, 'home/message_update.html', context)
+# @login_required
+# def updateMessage(request, pk):
+#     msg = Message.objects.get(id = pk)
+#     room = msg.room
+#     if request.user != msg.user:
+#         return HttpResponse("<h1>Forbidden 403!</h1>")
+#     form = MessageForm(instance=msg)
+#     if request.method == 'POST':
+#         form = MessageForm(request.POST, instance=msg)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Message Updated Successfully!")
+#             return redirect('room', pk = room.pk)
+#     context = {'msg':msg, 'room':room, 'form':form}
+#     return render(request, 'home/message_update.html', context)
 
 
 
@@ -218,10 +219,17 @@ def updateMessage(request, pk):
 def deleteMessage(request, pk):
     msg = Message.objects.get(id = pk)
     room = msg.room
+    current_user = request.user
+
     if request.user != msg.user:
         return HttpResponse("<h1>Forbidden 403!</h1>")
     if request.method == 'POST':
         msg.delete()
+
+        count = Message.objects.filter(room = room, user = current_user).count()
+        if count == 0:
+            room.participants.remove(current_user)
+
         messages.success(request, "Message Deleted Successfully!")
         return redirect('room', pk = room.pk)
     context = {'msg':msg, 'room':room}
@@ -243,11 +251,29 @@ def profile(request, username):
 
 @login_required
 def profileUpdate(request, username):
-    pass
-
+    current_user = User.objects.get(username = username)
+    if current_user != request.user:
+        return HttpResponse("<h1>Forbidden 403!</h1>")
+    form = UserUpdateForm(instance = current_user)
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=current_user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile Updated Successfully!")
+            return redirect('profile', username = current_user.username)
+    context = {'current_user':current_user, 'form':form}
+    return render(request, 'home/profile_update.html', context)
 
 
 
 @login_required
 def profileDelete(request, username):
-    pass
+    current_user = User.objects.get(username = username)
+    if request.user != current_user:
+        return HttpResponse("<h1>Forbidden 403!</h1>")
+    if request.method == 'POST':
+        current_user.delete()
+        messages.success(request, "Account Deleted Successfully!")
+        return redirect('home')
+    context = {'current_user':current_user}
+    return render(request, 'home/profile_delete.html', context)

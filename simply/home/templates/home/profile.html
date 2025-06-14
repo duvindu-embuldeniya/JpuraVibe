@@ -21,8 +21,13 @@
           <div class="profile__info">
             <h3>{{current_user.username}}</h3>
             <p>@{{current_user.username}}</p>
-            <a href="{% url 'profile-update' current_user.username %}" class="btn btn--main btn--pill">Edit Profile</a>
-          </div>
+
+            {% if request.user == current_user %}
+              <a href="{% url 'profile-update' current_user.username %}" class="btn btn--main btn--pill">Edit</a>
+              <a href="{% url 'profile-delete' current_user.username %}" class="btn btn--main btn--pill">Delete</a>
+            {% endif %}
+
+            </div>
           <div class="profile__about">
             <h3>About</h3>
             <p>
@@ -35,7 +40,7 @@
 
         <div class="roomList__header">
           <div>
-            <h2>Study Rooms Hosted by dennis_ivy</a>
+            <h2>Chat Rooms Hosted by {{current_user.username}}</a>
             </h2>
           </div>
         </div>
