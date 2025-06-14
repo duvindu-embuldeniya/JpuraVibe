@@ -19,4 +19,7 @@ urlpatterns = [
     path('profile/<str:username>/', profile, name = 'profile'),
     path('profile/<str:username>/update/', profileUpdate, name = 'profile-update'),
     path('profile/<str:username>/delete/', profileDelete, name = 'profile-delete'),
+
+    path('topics/', topicView, name = 'topic-view'),
+    path('activities/', activityView, name = 'activity-view'),
 ]

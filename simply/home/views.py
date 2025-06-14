@@ -27,7 +27,7 @@ def home(request):
     # topics = Topic.objects.all()
     topics = Topic.objects.filter(
         Q(name__icontains = q)
-    )
+    )[:5]
 
     # activities = Message.objects.all()
     activities = Message.objects.filter(
@@ -86,8 +86,7 @@ def register(request):
             new_user.save()
             messages.success(request, "Account Created Successfully")
             auth.login(request, new_user)
-            return redirect('home')
-            # need to adjust this to his profile
+            return redirect('profile', username = new_user.username)
     context = {'form':form}
     return render(request, 'home/register.html', context)
 
@@ -277,3 +276,19 @@ def profileDelete(request, username):
         return redirect('home')
     context = {'current_user':current_user}
     return render(request, 'home/profile_delete.html', context)
+
+
+
+def topicView(request):
+    q = request.GET.get('q') if request.GET.get('q') else ''
+    topics = Topic.objects.filter(
+        Q(name__icontains = q)
+    )[:5]
+    context = {'topics':topics}
+    return render(request, 'home/topics.html', context)
+
+
+def activityView(request):
+    activities = Message.objects.all()
+    context = {'activities':activities}
+    return render(request, 'home/activity.html', context)

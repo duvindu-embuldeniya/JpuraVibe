@@ -44,6 +44,14 @@
 
 // Menu
 
+
+let close = document.getElementById('closer')
+setTimeout(()=>{
+  close.style.display = 'none'
+},3000)
+
+
+
 const dropdownMenu = document.querySelector(".dropdown-menu");
 const dropdownButton = document.querySelector(".dropdown-button");
 
@@ -77,3 +85,8 @@ topicc.addEventListener('input', func1)
 function func1(){
   topicc.value = topicc.value.toLowerCase()
 }
+
+
+
+
+

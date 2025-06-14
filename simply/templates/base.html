@@ -17,13 +17,20 @@
     {% include 'navbar.html' %}
 
 
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li>{{message}}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+
+    	<div style="text-align: center;">
+        {% if messages %}
+          {% for message in messages %}
+            <div id="closer" style="margin-top: 10px; display: inline-block;">
+                <div style="background-color: #f0f0f0; display: inline-block; padding: 5px 10px; border-radius: 5px;"> 
+                    <span style="color: #000;">{{ message }}</span>
+                </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+
 
 
     {% block content %}
