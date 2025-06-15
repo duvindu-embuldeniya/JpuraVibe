@@ -3,9 +3,17 @@
           <div class="roomListRoom">
             <div class="roomListRoom__header">
               <a href="{% url 'profile' room.host.username %}" class="roomListRoom__author">
-                <div class="avatar avatar--small">
-                  <img src="https://randomuser.me/api/portraits/women/11.jpg" />
-                </div>
+
+                {% if request.user == room.host %}
+                  <div class="avatar avatar--small active">
+                    <img src="{{room.host.profile.get_image}}" />
+                  </div>
+                {% else %}
+                  <div class="avatar avatar--small">
+                    <img src="{{room.host.profile.get_image}}" />
+                  </div>
+                {% endif %}
+
                 <span>@{{room.host.username}}</span>
               </a>
               <div class="roomListRoom__actions">
@@ -14,9 +22,9 @@
             </div>
             <div class="roomListRoom__content">
               <a href="{% url 'room' room.id %}">{{room.name}}</a>
-              <p>
+              <!-- <p>
                 {{room.description}}
-              </p>
+              </p> -->
             </div>
             <div class="roomListRoom__meta">
               <a href="{% url 'room' room.id %}" class="roomListRoom__joined">

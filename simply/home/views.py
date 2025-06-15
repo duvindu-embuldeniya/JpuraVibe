@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from . models import Topic,Room,Message
 from . forms import (
-    RoomForm, UserRegistrationForm, MessageForm, UserUpdateForm
+    RoomForm, UserRegistrationForm, MessageForm, UserUpdateForm, 
+    ProfileUpdateForm
     )
 from django.contrib import messages
 from django.db.models import Q
@@ -17,26 +18,26 @@ def home(request):
 
     rooms = Room.objects.filter(
         Q(topic__name__icontains = q)|
-        Q(host__username__icontains = q)|
-        Q(name__icontains = q)|
-        Q(description__icontains = q)
+        # Q(host__username__icontains = q)|
+        Q(name__icontains = q)
+        # Q(description__icontains = q)
     )
 
     rooms_count = rooms.count()
 
-    # topics = Topic.objects.all()
-    topics = Topic.objects.filter(
-        Q(name__icontains = q)
-    )[:5]
+    topics = Topic.objects.all()[:5]
+    # topics = Topic.objects.filter(
+    #     Q(name__icontains = q)
+    # )[:5]
 
-    # activities = Message.objects.all()
-    activities = Message.objects.filter(
-        Q(room__topic__name__icontains = q)|
-        Q(user__username__icontains = q)|
-        Q(room__name__icontains = q)|
-        Q(room__description__icontains = q)|
-        Q(body__icontains = q)
-    )
+    activities = Message.objects.all()
+    # activities = Message.objects.filter(
+    #     Q(room__topic__name__icontains = q)|
+    #     Q(user__username__icontains = q)|
+    #     Q(room__name__icontains = q)|
+    #     Q(room__description__icontains = q)|
+    #     Q(body__icontains = q)
+    # )
 
     context = {'rooms':rooms, 'topics':topics, 'rooms_count':rooms_count, 'activities':activities}
     return render(request, 'home/index.html', context)
@@ -55,7 +56,7 @@ def login(request):
         if auth_user is not None:
             auth.login(request, auth_user)
             messages.success(request, "Successfully Loged-In!")
-            return redirect(request.GET.get('back') if request.GET.get('back') else 'home')
+            return redirect('home')
             # need to adjust this to his profile
         else:
             messages.error(request, "User Doesn't Exist!")
@@ -84,9 +85,10 @@ def register(request):
             new_user = form.save(commit=False)
             new_user.username = new_user.username.lower()
             new_user.save()
-            messages.success(request, "Account Created Successfully")
+            messages.success(request, "Account Created Successfully!")
             auth.login(request, new_user)
-            return redirect('profile', username = new_user.username)
+            return redirect('home')
+            # need to adjust this to his profile
     context = {'form':form}
     return render(request, 'home/register.html', context)
 
@@ -240,7 +242,8 @@ def deleteMessage(request, pk):
 def profile(request, username):
     current_user = User.objects.get(username = username)
     rooms = current_user.room_set.all()
-    activities = current_user.message_set.all()
+    # activities = current_user.message_set.all()
+    activities = Message.objects.all()
     topics = Topic.objects.all()
     context = {'current_user':current_user, 'rooms':rooms, 'activities':activities, 'topics':topics}
     return render(request, 'home/profile.html', context)
@@ -254,13 +257,16 @@ def profileUpdate(request, username):
     if current_user != request.user:
         return HttpResponse("<h1>Forbidden 403!</h1>")
     form = UserUpdateForm(instance = current_user)
+    p_form = ProfileUpdateForm(instance = current_user.profile)
     if request.method == 'POST':
         form = UserUpdateForm(request.POST, instance=current_user)
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance = current_user.profile)
         if form.is_valid():
             form.save()
+            p_form.save()
             messages.success(request, "Profile Updated Successfully!")
             return redirect('profile', username = current_user.username)
-    context = {'current_user':current_user, 'form':form}
+    context = {'current_user':current_user, 'form':form, 'p_form':p_form}
     return render(request, 'home/profile_update.html', context)
 
 

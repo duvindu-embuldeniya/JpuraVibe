@@ -7,11 +7,19 @@
                 <div class="activities__box">
                     <div class="activities__boxHeader roomListRoom__header">
                     <a href="{% url 'profile' activity.user.username %}" class="roomListRoom__author">
-                        <div class="avatar avatar--small">
-                        <img src="https://randomuser.me/api/portraits/women/11.jpg" />
-                        </div>
+                        
+                        {% if request.user == activity.user %}
+                            <div class="avatar avatar--small active">
+                                <img src="{{activity.user.profile.get_image}}" />
+                            </div>
+                        {% else %}
+                            <div class="avatar avatar--small">
+                                <img src="{{activity.user.profile.get_image}}" />
+                            </div>
+                        {% endif %}
+
                         <p>
-                        @s{{activity.user.username}}
+                        @{{activity.user.username}}
                         <span>{{activity.created|timesince}} ago</span>
                         </p>
                     </a>

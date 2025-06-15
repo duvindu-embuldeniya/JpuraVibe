@@ -28,7 +28,7 @@
 
                 <a href="{% url 'profile' request.user.username %}">
                   <div class="avatar avatar--medium active">
-                    <img src="https://randomuser.me/api/portraits/men/37.jpg" />
+                    <img src="{{request.user.profile.get_image}}" />
                   </div>
                   <p>{{request.user.username}} <span>@{{request.user.username}}</span></p>
                 </a>

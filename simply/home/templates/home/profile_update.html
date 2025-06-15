@@ -3,6 +3,7 @@
 
 {% block content %}
 
+
     <main class="update-account layout">
         <div class="container">
             <div class="layout__box">
@@ -21,30 +22,31 @@
                     </div>
                 </div>
                 <div class="layout__body">
-                    <form class="form" action="" method="POST">
+                    <form class="form" action="" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
+
+
 
                         {% for field in form %}
                             <div class="form__group">
                                 <label for="profile_pic">{{field.label}}</label>
                                 {{field}}
                             </div>
+
+                            {% for error in field.errors %}
+                                <small><p style="color: red;">{{error}}</p></small>
+                            {% endfor %}
                         {% endfor %}
 
-                        <!-- <div class="form__group">
-                          <label for="username">Username</label>
-                          <input id="username" name="username" type="text" placeholder="E.g. John doe" />
-                        </div>
+                        
+
 
                         <div class="form__group">
-                          <label for="email">Email</label>
-                          <input id="email" name="email" type="text" placeholder="E.g. john@email.com" />
+                            <label for="{{ p_form.image.name }}">Change:</label>
+                            {{ p_form.image }}
                         </div>
 
-                        <div class="form__group">
-                            <label for="user_bio">Bio</label>
-                            <textarea name="user_bio" id="user_bio" placeholder="Write about yourself..."></textarea>
-                        </div> -->
+
 
                         <div class="form__action">
                             <a class="btn btn--dark" href="{% url 'profile' current_user.username %}">Cancel</a>
