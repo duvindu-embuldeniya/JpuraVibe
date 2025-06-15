@@ -294,6 +294,7 @@ def topicView(request):
     return render(request, 'home/topics.html', context)
 
 
+
 def activityView(request):
     activities = Message.objects.all()
     context = {'activities':activities}
