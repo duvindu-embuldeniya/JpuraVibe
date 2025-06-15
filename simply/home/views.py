@@ -25,7 +25,8 @@ def home(request):
 
     rooms_count = rooms.count()
 
-    topics = Topic.objects.all()[:5]
+    topics = Topic.objects.all()
+    # topics = Topic.objects.all()[:5]
     # topics = Topic.objects.filter(
     #     Q(name__icontains = q)
     # )[:5]
