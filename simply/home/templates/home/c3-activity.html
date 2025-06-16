@@ -1,3 +1,5 @@
+{% load static %}
+        
         <div class="activities">
           <div class="activities__header">
             <h2>Recent Activities</h2>
@@ -9,13 +11,25 @@
                     <a href="{% url 'profile' activity.user.username %}" class="roomListRoom__author">
                         
                         {% if request.user == activity.user %}
+                         {% if activity.user.profile.image %}
                             <div class="avatar avatar--small active">
-                                <img src="{{activity.user.profile.get_image}}" />
+                                <img src="{{activity.user.profile.image.url}}" />
                             </div>
+                         {% else %}
+                            <div class="avatar avatar--small active">
+                                <img src="{% static 'images/avatar.svg' %}" />
+                            </div>
+                         {% endif %}
                         {% else %}
+                         {% if activity.user.profile.image %}
                             <div class="avatar avatar--small">
-                                <img src="{{activity.user.profile.get_image}}" />
+                                <img src="{{activity.user.profile.image.url}}" />
                             </div>
+                         {% else %}
+                            <div class="avatar avatar--small">
+                                <img src="{% static 'images/avatar.svg' %}" />
+                            </div>
+                         {% endif %}
                         {% endif %}
 
                         <p>

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 
 {% block content %}
 
@@ -14,9 +14,29 @@
       <div class="roomList">
         <div class="profile">
           <div class="profile__avatar">
+
+          {% if request.user == current_user %}
+           {% if current_user.profile.image %}
             <div class="avatar avatar--large active">
-              <img src="{{current_user.profile.get_image}}" />
+              <img src="{{current_user.profile.image.url}}" />
             </div>
+           {% else %}
+            <div class="avatar avatar--large active">
+              <img src="{% static 'images/avatar.svg' %}" />
+            </div>
+           {% endif %}
+          {% else %}
+           {% if current_user.profile.image %}
+            <div class="avatar avatar--large ">
+              <img src="{{current_user.profile.image.url}}" />
+            </div>
+           {% else %}
+            <div class="avatar avatar--large ">
+              <img src="{% static 'images/avatar.svg' %}" />
+            </div>
+           {% endif %}
+          {% endif %}
+
           </div>
           <div class="profile__info">
             <h3>{{current_user.username}}</h3>

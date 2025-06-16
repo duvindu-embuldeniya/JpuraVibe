@@ -48,9 +48,9 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username}'s profile"
     
-    @property
-    def get_image(self):
-        try:
-            return self.image.url
-        except Exception as ex:
-            return '/static/profile_model/avatar.svg'
+    # @property
+    # def get_image(self):
+    #     try:
+    #         return self.image.url
+    #     except Exception as ex:
+    #         return '/static/profile_model/avatar.svg'

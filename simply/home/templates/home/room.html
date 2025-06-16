@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -86,13 +87,25 @@
                 <a href="{% url 'profile' room.host.username %}" class="room__author">
 
                 {% if request.user == room.host %}
+                 {% if room.host.profile.image %}
                   <div class="avatar avatar--small active">
-                    <img src="{{room.host.profile.get_image}}" />
+                    <img src="{{room.host.profile.image.url}}" />
                   </div>
+                 {% else %}
+                  <div class="avatar avatar--small active">
+                    <img src="{% static 'images/avatar.svg' %}" />
+                  </div>
+                 {% endif %}
                 {% else %}
+                 {% if room.host.profile.image %}
                   <div class="avatar avatar--small">
-                    <img src="{{room.host.profile.get_image}}" />
+                    <img src="{{room.host.profile.image.url}}" />
                   </div>
+                 {% else %}
+                  <div class="avatar avatar--small">
+                    <img src="{% static 'images/avatar.svg' %}" />
+                  </div>
+                 {% endif %}
                 {% endif %}
 
                   <span>@{{room.host.username}}</span>
@@ -112,14 +125,26 @@
                       <div class="thread__author">
                         <a href="{% url 'profile' message.user.username %}" class="thread__authorInfo">
                           
-                        {% if request.user == message.user %}  
+                        {% if request.user == message.user %}
+                         {% if message.user.profile.image %}
                           <div class="avatar avatar--small active">
-                            <img src="{{message.user.profile.get_image}}" />
+                            <img src="{{message.user.profile.image.url}}" />
                           </div>
+                         {% else %}
+                          <div class="avatar avatar--small active">
+                            <img src="{% static 'images/avatar.svg' %}" />
+                          </div>
+                         {% endif %}
                         {% else %}
+                         {% if message.user.profile.image %}
                           <div class="avatar avatar--small">
-                            <img src="{{message.user.profile.get_image}}" />
+                            <img src="{{message.user.profile.image.url}}" />
                           </div>
+                         {% else %}
+                          <div class="avatar avatar--small">
+                            <img src="{% static 'images/avatar.svg' %}" />
+                          </div>
+                         {% endif %}
                         {% endif %}
 
                           <span>@{{message.user.username}}</span>
@@ -169,13 +194,25 @@
               <a href="{% url 'profile' member.username %}" class="participant">
 
               {% if request.user == member %}
+               {% if member.profile.image %}
                 <div class="avatar avatar--medium active">
-                  <img src="{{member.profile.get_image}}" />
+                  <img src="{{member.profile.image.url}}" />
                 </div>
+               {% else %}
+                <div class="avatar avatar--medium active">
+                  <img src="{% static 'images/avatar.svg' %}" />
+                </div>
+               {% endif %}
               {% else %}
+               {% if member.profile.image %}
                 <div class="avatar avatar--medium">
-                  <img src="{{member.profile.get_image}}" />
+                  <img src="{{member.profile.image.url}}" />
                 </div>
+               {% else %}
+                <div class="avatar avatar--medium">
+                  <img src="{% static 'images/avatar.svg' %}" />
+                </div>
+               {% endif %}
               {% endif %}
               
                 <p>
