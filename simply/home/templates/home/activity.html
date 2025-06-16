@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load static %}
+
 
 {% block content %}
     
@@ -24,9 +26,29 @@
               <div class="activities__box">
                 <div class="activities__boxHeader roomListRoom__header">
                   <a href="{% url 'profile' activity.user.username %}" class="roomListRoom__author">
-                    <div class="avatar avatar--small">
-                      <img src="{{activity.user.profile.get_image}}" />
-                    </div>
+                    
+                        {% if request.user == activity.user %}
+                         {% if activity.user.profile.image %}
+                            <div class="avatar avatar--small active">
+                                <img src="{{activity.user.profile.image.url}}" />
+                            </div>
+                         {% else %}
+                            <div class="avatar avatar--small active">
+                                <img src="{% static 'images/avatar.svg' %}" />
+                            </div>
+                         {% endif %}
+                        {% else %}
+                         {% if activity.user.profile.image %}
+                            <div class="avatar avatar--small">
+                                <img src="{{activity.user.profile.image.url}}" />
+                            </div>
+                         {% else %}
+                            <div class="avatar avatar--small">
+                                <img src="{% static 'images/avatar.svg' %}" />
+                            </div>
+                         {% endif %}
+                        {% endif %}
+                    
                     <p>
                       @{{activity.user.username}}
                       <span>{{activity.created|timesince}} ago</span>

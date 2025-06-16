@@ -1,3 +1,5 @@
+{% load static %}
+
         {% for room in rooms %}
 
           <div class="roomListRoom">
@@ -5,13 +7,25 @@
               <a href="{% url 'profile' room.host.username %}" class="roomListRoom__author">
 
                 {% if request.user == room.host %}
-                  <div class="avatar avatar--small active">
-                    <img src="{{room.host.profile.get_image}}" />
-                  </div>
+                  {% if room.host.profile.image %}
+                    <div class="avatar avatar--small active">
+                      <img src="{{room.host.profile.image.url}}" />
+                    </div>
+                  {% else %}
+                    <div class="avatar avatar--small active">
+                      <img src="{% static 'images/avatar.svg' %}" />
+                    </div>
+                  {% endif %}
                 {% else %}
-                  <div class="avatar avatar--small">
-                    <img src="{{room.host.profile.get_image}}" />
-                  </div>
+                  {% if room.host.profile.image %}
+                    <div class="avatar avatar--small">
+                      <img src="{{room.host.profile.image.url}}" />
+                    </div>
+                  {% else %}
+                    <div class="avatar avatar--small">
+                      <img src="{% static 'images/avatar.svg' %}" />
+                    </div>
+                  {% endif %}
                 {% endif %}
 
                 <span>@{{room.host.username}}</span>
