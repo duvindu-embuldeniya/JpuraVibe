@@ -89,4 +89,9 @@ function func1(){
 
 
 
-
+// document.addEventListener('DOMContentLoaded', function () {
+//   const usernameInput = document.getElementById('duvindu_username');
+//   usernameInput.addEventListener('input', function () {
+//       this.value = this.value.toLowerCase();
+//   });
+// });

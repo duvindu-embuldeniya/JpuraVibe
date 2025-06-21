@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="{% static 'images/logo.png' %}" type="image/x-icon" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- For Flash Messages -->
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
     <title>J'Pura Vibe</title>
   </head>
 
@@ -18,12 +20,14 @@
 
 
 
-    	<div style="text-align: center;">
+      <div style="text-align: center;">
         {% if messages %}
           {% for message in messages %}
-            <div id="closer" style="margin-top: 10px; display: inline-block;">
-                <div style="background-color: #f0f0f0; display: inline-block; padding: 5px 10px; border-radius: 5px;"> 
-                    <span style="color: #000;">{{ message }}</span>
+            <div id="closer" style="display: inline-block;">
+                <div id="msg-{{message.tags}}" style="display: inline-block; 
+                    padding: 10px 10px; 
+                    border-radius: 5px;"> 
+                    <span style="color: black;" >{{ message }}</span>
                 </div>
             </div>
           {% endfor %}

@@ -51,7 +51,7 @@ def login(request):
         messages.info(request, "You Have Already Loged-In!")
         return redirect('home')
     if request.method == 'POST':
-        username = request.POST.get('username').lower()
+        username = request.POST.get('username')
         password = request.POST.get('password')
         auth_user = auth.authenticate(username = username, password = password)
         if auth_user is not None:
@@ -83,9 +83,10 @@ def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            new_user = form.save(commit=False)
-            new_user.username = new_user.username.lower()
-            new_user.save()
+            # new_user = form.save(commit=False)
+            # new_user.username = new_user.username.lower()
+            # new_user.save()
+            new_user = form.save()
             messages.success(request, "Account Created Successfully!")
             auth.login(request, new_user)
             return redirect('home')
@@ -263,10 +264,13 @@ def profileUpdate(request, username):
         form = UserUpdateForm(request.POST, instance=current_user)
         p_form = ProfileUpdateForm(request.POST, request.FILES, instance = current_user.profile)
         if form.is_valid():
-            form.save()
+            # alt_user = form.save(commit=False)
+            # alt_user.username = alt_user.username.lower()
+            # alt_user.save()
+            alt_user = form.save()
             p_form.save()
             messages.success(request, "Profile Updated Successfully!")
-            return redirect('profile', username = current_user.username)
+            return redirect('profile', username = alt_user.username)
     context = {'current_user':current_user, 'form':form, 'p_form':p_form}
     return render(request, 'home/profile_update.html', context)
 

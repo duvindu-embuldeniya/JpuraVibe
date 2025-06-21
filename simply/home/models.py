@@ -42,7 +42,7 @@ class Message(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='profile_pics/')
+    image = models.ImageField(upload_to='profile_pics/', null=True)
     # image = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
 
     def __str__(self):

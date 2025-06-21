@@ -1,0 +1,11 @@
+        #msg-info{
+            background-color: rgb(99, 247, 247);
+        }
+
+        #msg-success{
+            background-color: rgb(181, 251, 77);
+        }
+
+        #msg-error{
+            background-color: rgb(255, 78, 78);
+        }
