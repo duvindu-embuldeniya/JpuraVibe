@@ -13,7 +13,7 @@ class RoomForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(RoomForm, self).__init__(*args, **kwargs)
 
-        self.fields['description'].widget.attrs.update({'placeholder':'Max Characters :- 300'})
+        self.fields['description'].widget.attrs.update({'placeholder':'First 300 Characters Will Display...'})
 
     class Meta:
         model = Room
