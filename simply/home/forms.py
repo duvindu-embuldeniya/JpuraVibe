@@ -9,6 +9,12 @@ from django.contrib import messages
 
 
 class RoomForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(RoomForm, self).__init__(*args, **kwargs)
+
+        self.fields['description'].widget.attrs.update({'placeholder':'Max Characters :- 300'})
+
     class Meta:
         model = Room
         fields = ['name', 'description']
