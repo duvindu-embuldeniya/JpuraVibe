@@ -16,17 +16,24 @@ from django.contrib.auth.decorators import login_required
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') else ''
 
-    rooms = Room.objects.filter(
+    # mens = User.objects.filter(
+    #     Q(username__icontains = q)
+    # )
+
+    rooms = Room.objects.distinct().filter(
         Q(topic__name__icontains = q)|
         # Q(host__username__icontains = q)|
         Q(name__icontains = q)
+        # Q(participants__in = mens)
+        # or
+        # Q(participants__username__icontains = q)
         # Q(description__icontains = q)
     )
 
     rooms_count = rooms.count()
 
-    topics = Topic.objects.all()
-    # topics = Topic.objects.all()[:5]
+    # topics = Topic.objects.all()
+    topics = Topic.objects.all()[:5]
     # topics = Topic.objects.filter(
     #     Q(name__icontains = q)
     # )[:5]
