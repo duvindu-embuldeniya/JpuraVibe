@@ -1,5 +1,5 @@
-Welcome Email
-Password Reset Functionalty
+Welcome Email                 || Done
+Password Reset Functionalty   || Done
 
 Bug -> ImageFiled(blank = True) -> Unexpected Rendring of Clear Box
     -> Onlien Status(via cookies only visible to user)
